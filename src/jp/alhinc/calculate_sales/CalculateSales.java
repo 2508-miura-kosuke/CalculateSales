@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CalculateSales {
@@ -37,7 +39,34 @@ public class CalculateSales {
 		}
 
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
+		//処理内容2-1
+        File[] files = new File(args[0]).listFiles();
 
+        List<File> rcdFiles = new ArrayList<>();
+
+        for(int i = 0; i < files.length ; i++) {
+        	  if(files[i].getName().matches("\\d{8}.rcd")) {
+
+        		  rcdFiles.add(files[i]);
+        	  }
+        }
+
+        //処理内容2-2
+        List<File> saleFiles = new ArrayList<>();
+
+        for(int i = 0; i < rcdFiles.size(); i++) {
+        	String[] sale;
+        	br = BufferdReader();
+        	while(sale = (rcdFiles).readline() != null ) {
+        		String[] momeys = sale;
+        	}
+
+            //long fileSale = Long.parseLong(moneys[1]);
+
+           // Long saleAmount =  + fileSale;
+
+
+        }
 
 
 
