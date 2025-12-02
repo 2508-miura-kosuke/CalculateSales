@@ -40,33 +40,76 @@ public class CalculateSales {
 
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
 		//処理内容2-1
+		//listFilesを使用してfilesという配列に、
+		//指定したパスに存在する全てのファイルの情報を格納します。
         File[] files = new File(args[0]).listFiles();
 
+        //先にファイルの情報を格納するList(ArrayList)を宣言します。
         List<File> rcdFiles = new ArrayList<>();
 
+        //filesの数だけ繰り返すことで、
+        //指定したパスに存在する全てのファイルの数だけ繰り返されます。
         for(int i = 0; i < files.length ; i++) {
+        	  //ファイル名の取得とmatchesを使用してファイル名が「数字8桁.rcd」か判定
         	  if(files[i].getName().matches("\\d{8}.rcd")) {
-
+        		  //売上ファイルの条件に当てはまったものだけ、List(ArrayList)に追加
         		  rcdFiles.add(files[i]);
         	  }
         }
 
         //処理内容2-2
-        List<File> saleFiles = new ArrayList<>();
+        //brを空にする
+        BufferedReader br = null;
 
+        //rcdfilesに複数の売上ファイルの情報を格納しているので、その数だけ繰り返す
         for(int i = 0; i < rcdFiles.size(); i++) {
-        	String[] sale;
-        	br = BufferdReader();
-        	while(sale = (rcdFiles).readline() != null ) {
-        		String[] momeys = sale;
+
+        	//売上ファイルの要素を一つ取り出す
+        	File items;
+        	items = rcdFiles.get(i);
+
+        	try {
+        	//brに取り出した売上ファイル情報を入れる
+            File file = items;
+     		FileReader fr = new FileReader(file);
+            br = new BufferedReader(fr);
+
+            //先にファイルの情報を格納するList(ArrayList)を宣言します。
+            List<String> numbers = new ArrayList<>();
+
+            //売上ファイルの中身を一行ずつ読み込む
+            //売上ファイルの中身を新しいListを作成して保持する
+        	String sale;
+        	while((sale = br.readLine()) != null); {
+        		numbers.add(sale);
         	}
 
-            //long fileSale = Long.parseLong(moneys[1]);
+        	//売上ファイルから読み込んだ売上金額をMapに加算していくために型の変換を行う
+            long fileSale = Long.parseLong(numbers.get(1));
 
-           // Long saleAmount =  + fileSale;
+            //読み込んだ売上金額を加算します
+            Long saleAmount = branchSales.get(numbers.get(0)) + fileSale;
 
+        	//加算した売上金額をMapに追加します
+        	branchSales.put(numbers.get(0),saleAmount);
 
-        }
+        	} catch(IOException e) {
+    			System.out.println(UNKNOWN_ERROR);
+    			return;
+    		} finally {
+    			// ファイルを開いている場合
+    			if(br != null) {
+    				try {
+    					// ファイルを閉じる
+    					br.close();
+    				} catch(IOException e) {
+    					System.out.println(UNKNOWN_ERROR);
+    					return;
+    				}
+    			}
+    		}
+    		return;
+    	}
 
 
 
@@ -97,8 +140,13 @@ public class CalculateSales {
 			String line;
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
+				//spritを使って「,」で分割すると、
+				//items[0]には支店コード、items[1]には支店名が格納されます。
 				String[] items = line.split(",");
 
+				//Mapに追加する2つの情報をputの引数として指定します。
+				//固定の整数を追加する際に、何も指定しないとint型で扱われる。
+				//Longで固定値を追加する場合は、「0L」のように記載し、Longの整数であることを示す。
 				branchNames.put(items[0],items[1]);
 				branchSales.put(items[0],0L);
 				System.out.println(line);
@@ -133,6 +181,18 @@ public class CalculateSales {
 	 */
 	private static boolean writeFile(String path, String fileName, Map<String, String> branchNames, Map<String, Long> branchSales) {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
+
+		//コマンドライン引数で指定されたディレクトリに支店別集計ファイルを作成
+		//try(BufferedWriter writer = new BufferedWriter(new FileWriter()) {
+		//write
+		//
+
+		//} catch {
+
+	    //} finally
+
+
+
 
 		return true;
 	}
