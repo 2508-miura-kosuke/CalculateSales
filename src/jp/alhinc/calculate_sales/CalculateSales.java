@@ -1,8 +1,10 @@
 package jp.alhinc.calculate_sales;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +82,7 @@ public class CalculateSales {
             //売上ファイルの中身を一行ずつ読み込む
             //売上ファイルの中身を新しいListを作成して保持する
         	String sale;
-        	while((sale = br.readLine()) != null); {
+        	while((sale = br.readLine()) != null) {
         		numbers.add(sale);
         	}
 
@@ -108,7 +110,6 @@ public class CalculateSales {
     				}
     			}
     		}
-    		return;
     	}
 
 
@@ -181,19 +182,44 @@ public class CalculateSales {
 	 */
 	private static boolean writeFile(String path, String fileName, Map<String, String> branchNames, Map<String, Long> branchSales) {
 		// ※ここに書き込み処理を作成してください。(処理内容3-1)
-
 		//コマンドライン引数で指定されたディレクトリに支店別集計ファイルを作成
-		//try(BufferedWriter writer = new BufferedWriter(new FileWriter()) {
-		//write
-		//
+		BufferedWriter bw = null;
 
-		//} catch {
+		try {
+		//ファイル作成
+		File newFile = new File(path,fileName);
+		(newFile).createNewFile();
 
-	    //} finally
+        //ファイルに書き込む処理の準備
+		FileWriter fw = new FileWriter(newFile);
+		bw = new BufferedWriter(fw);
+
+		//ファイルに書き込む情報をMapから全てのKeyを取得する
+		for(String key : branchSales.keySet()) {
 
 
+			//取得したデータをファイルに書き込む
+			bw.write(key + "," + branchNames.get(key) + "," + branchSales.get(key));
 
+			//改行
+			bw.newLine();
+		}
 
+		} catch(IOException e) {
+			System.out.println(UNKNOWN_ERROR);
+			return false;
+		} finally {
+			// ファイルを開いている場合
+			if(bw != null) {
+				try {
+					// ファイルを閉じる
+					bw.close();
+				} catch(IOException e) {
+					System.out.println(UNKNOWN_ERROR);
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
