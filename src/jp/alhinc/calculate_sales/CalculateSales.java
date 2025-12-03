@@ -67,29 +67,29 @@ public class CalculateSales {
         for(int i = 0; i < rcdFiles.size(); i++) {
 
         	try {
-        	//売上ファイルの要素を一つ取り出す
-        	//brに取り出した売上ファイル情報を入れる
-     		FileReader fr = new FileReader(rcdFiles.get(i));
-            br = new BufferedReader(fr);
+        		//売上ファイルの要素を一つ取り出す
+        		//brに取り出した売上ファイル情報を入れる
+				FileReader fr = new FileReader(rcdFiles.get(i));
+				br = new BufferedReader(fr);
 
-            //先にファイルの情報を格納するList(ArrayList)を宣言します。
-            List<String> filecontents = new ArrayList<>();
+				//先にファイルの情報を格納するList(ArrayList)を宣言します。
+				List<String> fileContents = new ArrayList<>();
 
-            //売上ファイルの中身を一行ずつ読み込む
-            //売上ファイルの中身を新しいListを作成して保持する
-        	String line;
-        	while((line = br.readLine()) != null) {
-        		filecontents.add(line);
-        	}
+				//売上ファイルの中身を一行ずつ読み込む
+				//売上ファイルの中身を新しいListを作成して保持する
+				String line;
+				while((line = br.readLine()) != null) {
+					fileContents.add(line);
+				}
 
-        	//売上ファイルから読み込んだ売上金額をMapに加算していくために型の変換を行う
-            long fileSale = Long.parseLong(filecontents.get(1));
+				//売上ファイルから読み込んだ売上金額をMapに加算していくために型の変換を行う
+				long fileSale = Long.parseLong(fileContents.get(1));
 
-            //読み込んだ売上金額を加算します
-            Long saleAmount = branchSales.get(filecontents.get(0)) + fileSale;
+				//読み込んだ売上金額を加算します
+				Long saleAmount = branchSales.get(fileContents.get(0)) + fileSale;
 
-        	//加算した売上金額をMapに追加します
-        	branchSales.put(filecontents.get(0), saleAmount);
+				//加算した売上金額をMapに追加します
+				branchSales.put(fileContents.get(0), saleAmount);
 
         	} catch(IOException e) {
     			System.out.println(UNKNOWN_ERROR);
@@ -179,27 +179,27 @@ public class CalculateSales {
 		BufferedWriter bw = null;
 
 		try {
-		 //ファイル作成
-		 File newFile = new File(path, fileName);
+			//ファイル作成
+			File newFile = new File(path, fileName);
 
-         //ファイルに書き込む処理の準備
-		 FileWriter fw = new FileWriter(newFile);
-		 bw = new BufferedWriter(fw);
+			//ファイルに書き込む処理の準備
+			FileWriter fw = new FileWriter(newFile);
+			bw = new BufferedWriter(fw);
 
-		 //ファイルに書き込む情報をMapから全てのKeyを取得する
-		 for(String key : branchSales.keySet()) {
+			//ファイルに書き込む情報をMapから全てのKeyを取得する
+			for(String key : branchSales.keySet()) {
 
 			//取得したデータをファイルに書き込む
 			bw.write(key + "," + branchNames.get(key) + "," + branchSales.get(key));
 
 			//改行
 			bw.newLine();
-		 }
+			 }
 
-		 } catch(IOException e) {
+		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
 			return false;
-		 } finally {
+		} finally {
 			// ファイルを開いている場合
 			if(bw != null) {
 				try {
@@ -210,8 +210,7 @@ public class CalculateSales {
 					return false;
 				}
 			}
-		 }
+		}
 		return true;
 	}
-
 }
