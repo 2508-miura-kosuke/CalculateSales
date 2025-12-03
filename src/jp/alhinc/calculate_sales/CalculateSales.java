@@ -59,6 +59,16 @@ public class CalculateSales {
         	  }
         }
 
+        //エラー処理2-1
+        for(int i = 0; i < rcdFiles.size() -1; i++) {
+
+        	int former = Integer.parseInt(rcdFiles.get(i).substring(0, 8));
+        	int latter = Integer.parseInt(次のファイル名.substring(0, 8));
+
+        	if((latter - former) != 1) {
+        	}
+    	}
+
         //処理内容2-2
         //brを空にする
         BufferedReader br = null;
@@ -129,6 +139,12 @@ public class CalculateSales {
 
 		try {
 			File file = new File(path, fileName);
+			//エラー処理1-1
+			//ファイルの存在チェック
+			if(!file.exists()) {
+				System.out.println(FILE_NOT_EXIST);
+				return false;
+			}
 			FileReader fr = new FileReader(file);
 			br = new BufferedReader(fr);
 
@@ -138,6 +154,13 @@ public class CalculateSales {
 				//spritを使って「,」で分割すると、
 				//items[0]には支店コード、items[1]には支店名が格納されます。
 				String[] items = line.split(",");
+
+				//エラー処理1-2
+				//支店定義ファイルのフォーマットを確認
+				if((items.length != 2 || (!items[0].matches("[0-9]{3}")))) {
+					System.out.println(FILE_INVALID_FORMAT);
+					return false;
+				}
 
 				//Mapに追加する2つの情報をputの引数として指定します。
 				//固定の整数を追加する際に、何も指定しないとint型で扱われる。
@@ -189,12 +212,12 @@ public class CalculateSales {
 			//ファイルに書き込む情報をMapから全てのKeyを取得する
 			for(String key : branchSales.keySet()) {
 
-			//取得したデータをファイルに書き込む
-			bw.write(key + "," + branchNames.get(key) + "," + branchSales.get(key));
+				//取得したデータをファイルに書き込む
+				bw.write(key + "," + branchNames.get(key) + "," + branchSales.get(key));
 
-			//改行
-			bw.newLine();
-			 }
+				//改行
+				bw.newLine();
+			}
 
 		} catch(IOException e) {
 			System.out.println(UNKNOWN_ERROR);
