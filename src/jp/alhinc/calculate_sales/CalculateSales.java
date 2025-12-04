@@ -25,7 +25,9 @@ public class CalculateSales {
 	private static final String FILE_NOT_EXIST = "支店定義ファイルが存在しません";
 	private static final String FILE_INVALID_FORMAT = "支店定義ファイルのフォーマットが不正です";
 	private static final String FILE_NOT_CONSECUTIVE = "売上ファイル名が連番になっていません";
-	private static final String TOTAL_AMOUNT_EXCEEDED_FIGURES = "合計⾦額が10桁を超えました";
+	private static final String TOTAL_AMOUNT_EXCEEDED_FIGURES = "合計金額が10桁を超えました";
+	private static final String BRANCH_CODE_INVALID = "の支店コードが不正です";
+	private static final String INVALID_FORMAT = "のフォーマットが不正です";
 	/**
 	 * メインメソッド
 	 *
@@ -61,24 +63,15 @@ public class CalculateSales {
         //filesの数だけ繰り返すことで、
         //指定したパスに存在する全てのファイルの数だけ繰り返されます。
         for(int i = 0; i < files.length; i++) {
+
+        	//エラー処理3-3
+        	//ファイルかディレクトリなのかを確認
 			//ファイル名の取得とmatchesを使用してファイル名が「数字8桁.rcd」か判定
-			if(files[i].getName().matches("\\d{8}[.]rcd")) {
+			if((files[i].isFile() && files[i].getName().matches("\\d{8}[.]rcd"))) {
 				//売上ファイルの条件に当てはまったものだけ、List(ArrayList)に追加
 				rcdFiles.add(files[i]);
 			}
 		}
-        //エラー処理3-3
-    	//ファイルかディレクトリなのかを確認
-		//ファイル名の取得とmatchesを使用してファイル名が「数字8桁.rcd」か判定
-        for(int i = 0; i < rcdFiles.size(); i++) {
-        	if(rcdFiles.get(i).isFile() && files[i].getName().matches("\\d{8}[.]rcd")) {
-        		continue;
-    		} else {
-    			System.out.println(UNKNOWN_ERROR);
-    			return;
-    		}
-
-        }
 
 
         //エラー処理2-1
@@ -86,7 +79,7 @@ public class CalculateSales {
         Collections.sort(rcdFiles);
 
         //売上ファイルの連番を確認
-        for(int i = 0; i < rcdFiles.size() -1; i++) {
+        for(int i = 0; i < rcdFiles.size() - 1; i++) {
 
         	//売上ファイル名の先頭の数字8文字を切り出し、int型に変換
         	int former = Integer.parseInt(rcdFiles.get(i).getName().substring(0, 8));
@@ -122,17 +115,17 @@ public class CalculateSales {
 					fileContents.add(line);
 				}
 
-				//エラー処理2-3
-				//支店定義ファイルに売上ファイルの支店コードが存在するか確認
-				if(!branchNames.containsKey(fileContents.get(0))) {
-					System.out.println(rcdFiles.get(i).getName() + "の支店コードが不正です");
-					return;
-				}
-
 				//エラー処理2-4
 				//売上ファイルの行数が2行ではなかった場合はエラー表示する
 				if(fileContents.size() != 2) {
-					System.out.println(rcdFiles.get(i).getName()+ "のフォーマットが不正です");
+					System.out.println(rcdFiles.get(i).getName()+ INVALID_FORMAT);
+					return;
+				}
+
+				//エラー処理2-3
+				//支店定義ファイルに売上ファイルの支店コードが存在するか確認
+				if(!branchNames.containsKey(fileContents.get(0))) {
+					System.out.println(rcdFiles.get(i).getName() + BRANCH_CODE_INVALID);
 					return;
 				}
 
