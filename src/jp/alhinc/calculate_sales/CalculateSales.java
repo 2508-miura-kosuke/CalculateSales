@@ -73,7 +73,6 @@ public class CalculateSales {
 			}
 		}
 
-
         //エラー処理2-1
         //売上ファイルを保持しているListをソートする
         Collections.sort(rcdFiles);
@@ -173,7 +172,6 @@ public class CalculateSales {
 		if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
 			return;
 		}
-
 	}
 
 	/**
@@ -199,6 +197,7 @@ public class CalculateSales {
 			FileReader fr = new FileReader(file);
 			br = new BufferedReader(fr);
 
+			//処理内容1-2
 			String line;
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
